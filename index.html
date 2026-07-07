@@ -18,53 +18,133 @@
     --tape:#F1E7B8;
     --warn:#B4472A;
     --warn-soft:#F4DCD3;
+    --accent:#3D6B75;
   }
 
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:var(--paper);
-    background-image:
-      radial-gradient(circle at 1px 1px, rgba(43,42,36,0.05) 1px, transparent 0);
-    background-size: 22px 22px;
+    background-image:radial-gradient(circle at 1px 1px, rgba(43,42,36,0.05) 1px, transparent 0);
+    background-size:22px 22px;
     color:var(--ink);
     font-family:'Inter',sans-serif;
     min-height:100vh;
-    padding: 28px 18px 80px;
   }
 
-  .wrap{max-width:980px;margin:0 auto;}
+  /* ===== LOGIN ===== */
+  .login-wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .login-card{
+    background:#fffdf7;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:34px 30px;
+    max-width:320px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 4px 0 rgba(43,42,36,0.06);
+    position:relative;
+  }
+  .login-card h1{
+    font-family:'Fredoka',sans-serif;
+    font-size:1.6rem;
+    margin:0 0 6px;
+  }
+  .login-card p{
+    color:var(--ink-soft);
+    font-size:0.85rem;
+    margin:0 0 20px;
+  }
+  #passInput{
+    width:100%;
+    text-align:center;
+    letter-spacing:8px;
+    font-size:1.4rem;
+    padding:12px;
+    border-radius:10px;
+    border:2px solid var(--line);
+    font-family:'Inter',sans-serif;
+    margin-bottom:14px;
+  }
+  #passInput:focus{ outline:none; border-color:var(--accent); }
+  #loginBtn{
+    width:100%;
+    padding:11px;
+    border:none;
+    border-radius:10px;
+    background:var(--accent);
+    color:#fff;
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  #loginError{
+    color:var(--warn);
+    font-size:0.8rem;
+    margin-top:10px;
+    min-height:1em;
+  }
+
+  /* ===== APP ===== */
+  #appScreen{ display:none; padding:22px 16px 70px; }
+  .wrap{max-width:900px;margin:0 auto;}
 
   header.top{
     display:flex;
     flex-wrap:wrap;
-    align-items:flex-end;
+    align-items:center;
     justify-content:space-between;
-    gap:16px;
-    margin-bottom:26px;
+    gap:12px;
+    margin-bottom:18px;
     border-bottom:2px solid var(--line);
-    padding-bottom:18px;
+    padding-bottom:14px;
   }
   h1{
     font-family:'Fredoka',sans-serif;
     font-weight:700;
-    font-size:2.1rem;
+    font-size:1.8rem;
     margin:0;
     letter-spacing:-0.5px;
   }
-  h1 span.dot{color:#3D6B75;}
-  .subtitle{
-    font-size:0.85rem;
-    color:var(--ink-soft);
-    margin-top:4px;
-  }
+  h1 span.dot{color:var(--accent);}
 
-  .search-box{
-    position:relative;
-    flex:1;
-    min-width:220px;
-    max-width:320px;
+  .user-badge{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--paper-dark);
+    border-radius:20px;
+    padding:6px 6px 6px 14px;
+    font-size:0.82rem;
+    font-weight:600;
   }
+  .user-badge .admin-flag{
+    background:var(--accent);
+    color:#fff;
+    font-size:0.65rem;
+    padding:2px 7px;
+    border-radius:10px;
+    font-weight:700;
+  }
+  .logout-btn{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:5px 10px;
+    font-size:0.75rem;
+    cursor:pointer;
+    color:var(--ink-soft);
+  }
+  .logout-btn:hover{ color:var(--warn); }
+
+  .search-box{ margin-bottom:14px; }
   .search-box input{
     width:100%;
     padding:10px 14px;
@@ -75,23 +155,39 @@
     font-size:0.9rem;
     color:var(--ink);
   }
-  .search-box input:focus{
-    outline:none;
-    border-color:#3D6B75;
-  }
+  .search-box input:focus{ outline:none; border-color:var(--accent); }
 
-  .status-msg{
-    text-align:center;
+  .tabs-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .tab-btn{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:#fffdf7;
+    border:1.5px solid var(--line);
+    border-radius:20px;
+    padding:8px 14px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.85rem;
+    cursor:pointer;
     color:var(--ink-soft);
-    font-size:0.9rem;
-    padding:40px 0;
   }
+  .tab-btn.active{
+    border-color:var(--ink);
+    color:var(--ink);
+    background:var(--paper-dark);
+  }
+  .tab-dot{ width:9px;height:9px;border-radius:50%; }
+  .tab-btn.add-tab{ border-style:dashed; }
+  .tab-btn.admin-tab{ border-color:var(--accent); color:var(--accent); }
+  .tab-btn.admin-tab.active{ background:var(--accent); color:#fff; }
 
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
-    gap:22px;
-  }
+  .status-msg{ text-align:center; color:var(--ink-soft); font-size:0.9rem; padding:40px 0; }
 
   .shelf{
     position:relative;
@@ -99,282 +195,168 @@
     border-radius:14px;
     border:1px solid var(--line);
     box-shadow:0 3px 0 rgba(43,42,36,0.06);
-    padding:22px 18px 16px;
+    padding:24px 20px 18px;
     display:flex;
     flex-direction:column;
     gap:12px;
   }
-
   .tape{
-    position:absolute;
-    top:-11px;
-    left:24px;
-    width:78px;
-    height:22px;
-    background:var(--tape);
-    opacity:0.9;
-    transform:rotate(-3deg);
-    box-shadow:0 1px 2px rgba(0,0,0,0.12);
-    border-radius:2px;
+    position:absolute; top:-11px; left:26px;
+    width:78px; height:22px; background:var(--tape);
+    opacity:0.9; transform:rotate(-3deg);
+    box-shadow:0 1px 2px rgba(0,0,0,0.12); border-radius:2px;
   }
-
-  .shelf-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:8px;
-  }
+  .shelf-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
   .shelf-title{
-    font-family:'Fredoka',sans-serif;
-    font-weight:600;
-    font-size:1.15rem;
-    display:flex;
-    align-items:center;
-    gap:8px;
+    font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.2rem;
+    display:flex; align-items:center; gap:8px;
   }
-  .swatch{
-    width:11px;height:11px;border-radius:50%;
-    flex-shrink:0;
-  }
-  .shelf-actions{display:flex; gap:6px;}
+  .swatch{ width:12px;height:12px;border-radius:50%; flex-shrink:0; }
   .icon-btn{
-    background:none;border:none;cursor:pointer;
-    color:var(--ink-soft);
-    font-size:1rem;
-    padding:4px 6px;
-    border-radius:6px;
-    line-height:1;
+    background:none;border:none;cursor:pointer;color:var(--ink-soft);
+    font-size:1rem;padding:4px 6px;border-radius:6px;line-height:1;
   }
-  .icon-btn:hover{background:var(--paper-dark); color:var(--ink);}
-  .lock-note{
-    font-size:0.72rem;
-    color:var(--ink-soft);
-    opacity:0.6;
-  }
+  .icon-btn:hover{ background:var(--paper-dark); color:var(--ink); }
 
   .items{
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-    min-height:6px;
+    display:flex; flex-direction:column; gap:8px;
+    max-height:52vh; overflow-y:auto; padding-right:4px;
   }
-  .empty-note{
-    font-size:0.83rem;
-    color:var(--ink-soft);
-    font-style:italic;
-    padding:6px 2px;
-  }
+  .items::-webkit-scrollbar{ width:7px; }
+  .items::-webkit-scrollbar-thumb{ background:var(--line); border-radius:4px; }
+  .empty-note{ font-size:0.85rem; color:var(--ink-soft); font-style:italic; padding:8px 2px; }
 
   .item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:8px;
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:9px;
-    padding:8px 10px;
-    font-size:0.9rem;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:10px 12px; font-size:0.9rem;
   }
-  .item.warn{
-    background:var(--warn-soft);
-    border-color:#e0b3a2;
-  }
-  .item.bought{
-    opacity:0.55;
-  }
-  .item-check{
+  .item.warn{ background:var(--warn-soft); border-color:#e0b3a2; }
+  .item.bought{ opacity:0.55; }
+  .item-check{ flex-shrink:0; width:18px; height:18px; cursor:pointer; accent-color:var(--accent); }
+  .item-main{ display:flex; flex-direction:column; gap:3px; min-width:0; flex:1; }
+  .item-name{ font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .item-name.crossed{ text-decoration:line-through; color:var(--ink-soft); }
+  .item-meta{ font-size:0.75rem; color:var(--ink-soft); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .item-meta .exp-warn{ color:var(--warn); font-weight:600; }
+
+  .qty-control{
+    display:flex; align-items:center; gap:6px;
+    background:#fff; border:1px solid var(--line); border-radius:8px; padding:2px;
     flex-shrink:0;
-    width:17px;
-    height:17px;
-    cursor:pointer;
-    accent-color:#3D6B75;
   }
-  .item-main{
-    display:flex;
-    flex-direction:column;
-    gap:3px;
-    min-width:0;
-    flex:1;
+  .qty-btn{
+    width:24px;height:24px; border:none; border-radius:6px;
+    background:var(--paper-dark); color:var(--ink); font-size:1rem; font-weight:700;
+    cursor:pointer; line-height:1; display:flex; align-items:center; justify-content:center;
   }
-  .item-name{
-    font-weight:600;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .item-name.crossed{
-    text-decoration:line-through;
-    color:var(--ink-soft);
-  }
-  .item-meta{
-    font-size:0.75rem;
-    color:var(--ink-soft);
-    display:flex;
-    align-items:center;
-    gap:6px;
-    flex-wrap:wrap;
-  }
-  .item-meta .exp-warn{color:var(--warn); font-weight:600;}
-  .qty-input{
-    width:48px;
-    font-family:'Inter',sans-serif;
-    border:1px solid var(--line);
-    border-radius:6px;
-    padding:2px 4px;
-    font-size:0.75rem;
-    background:#fff;
-    color:var(--ink);
-  }
-  .qty-input:focus{ outline:none; border-color:#3D6B75; }
+  .qty-btn:hover{ background:var(--accent); color:#fff; }
+  .qty-val{ min-width:28px; text-align:center; font-weight:700; font-size:0.85rem; }
+
   .item-del{
-    background:none;
-    border:none;
-    color:var(--ink-soft);
-    cursor:pointer;
-    font-size:1rem;
-    padding:2px 6px;
-    flex-shrink:0;
+    background:none; border:none; color:var(--ink-soft); cursor:pointer;
+    font-size:1rem; padding:2px 6px; flex-shrink:0;
   }
-  .item-del:hover{color:var(--warn);}
+  .item-del:hover{ color:var(--warn); }
 
   form.add-item{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px;
-    margin-top:4px;
-    border-top:1px dashed var(--line);
-    padding-top:12px;
+    display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;
+    border-top:1px dashed var(--line); padding-top:14px;
   }
   form.add-item input, form.add-item select{
-    font-family:'Inter',sans-serif;
-    border:1.5px solid var(--line);
-    border-radius:7px;
-    padding:6px 8px;
-    font-size:0.83rem;
-    background:#fff;
-    color:var(--ink);
+    font-family:'Inter',sans-serif; border:1.5px solid var(--line); border-radius:7px;
+    padding:7px 9px; font-size:0.85rem; background:#fff; color:var(--ink);
   }
-  form.add-item input:focus, form.add-item select:focus{
-    outline:none;
-    border-color:var(--ink-soft);
-  }
-  .f-name{flex:2; min-width:110px;}
-  .f-qty{width:56px;}
-  .f-unit{width:64px;}
-  .f-exp{flex:1; min-width:110px;}
+  form.add-item input:focus, form.add-item select:focus{ outline:none; border-color:var(--ink-soft); }
+  .f-name{ flex:2; min-width:120px; }
+  .f-qty{ width:64px; }
+  .f-unit{ width:70px; }
+  .f-exp{ flex:1; min-width:120px; }
   .f-submit{
-    border:none;
-    border-radius:7px;
-    padding:6px 12px;
-    font-size:0.83rem;
-    font-weight:600;
-    cursor:pointer;
-    color:#fff;
-    font-family:'Inter',sans-serif;
+    border:none; border-radius:7px; padding:7px 14px; font-size:0.85rem; font-weight:600;
+    cursor:pointer; color:#fff; font-family:'Inter',sans-serif;
   }
 
-  .add-shelf{
-    border:2px dashed var(--line);
-    border-radius:14px;
-    background:transparent;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-height:120px;
-    cursor:pointer;
-    color:var(--ink-soft);
-    font-family:'Fredoka',sans-serif;
-    font-size:1rem;
-    font-weight:600;
-    gap:8px;
-    transition:background 0.15s, color 0.15s;
-  }
-  .add-shelf:hover{background:var(--paper-dark); color:var(--ink);}
-
-  .new-shelf-form{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    padding:8px;
-  }
-  .new-shelf-form input{
-    padding:7px 9px;
-    border-radius:7px;
-    border:1.5px solid var(--line);
-    font-family:'Inter',sans-serif;
-  }
-  .type-row{
-    display:flex;
-    gap:14px;
-    font-size:0.85rem;
-  }
+  .new-shelf-form{ display:flex; flex-direction:column; gap:12px; }
+  .new-shelf-form input{ padding:9px 10px; border-radius:8px; border:1.5px solid var(--line); font-family:'Inter',sans-serif; }
+  .type-row{ display:flex; gap:16px; font-size:0.87rem; }
   .type-row label{ display:flex; align-items:center; gap:5px; cursor:pointer; }
-  .color-row{display:flex; gap:6px; flex-wrap:wrap;}
-  .color-row button{
-    width:24px;height:24px;
-    border-radius:50%;
-    border:2px solid transparent;
-    cursor:pointer;
-  }
-  .color-row button.sel{border-color:var(--ink);}
-  .new-shelf-buttons{display:flex; gap:8px; margin-top:2px;}
+  .color-row{ display:flex; gap:7px; flex-wrap:wrap; }
+  .color-row button{ width:26px;height:26px;border-radius:50%;border:2px solid transparent;cursor:pointer; }
+  .color-row button.sel{ border-color:var(--ink); }
+  .new-shelf-buttons{ display:flex; gap:8px; margin-top:2px; }
   .new-shelf-buttons button{
-    border:none;
-    border-radius:7px;
-    padding:7px 12px;
-    font-size:0.83rem;
-    font-weight:600;
-    cursor:pointer;
-    font-family:'Inter',sans-serif;
+    border:none;border-radius:8px;padding:9px 16px;font-size:0.87rem;font-weight:600;
+    cursor:pointer;font-family:'Inter',sans-serif;
   }
-  .btn-save{background:#3D6B75; color:#fff;}
-  .btn-cancel{background:var(--paper-dark); color:var(--ink);}
+  .btn-save{ background:var(--accent); color:#fff; }
+  .btn-cancel{ background:var(--paper-dark); color:var(--ink); }
 
-  footer.note{
-    text-align:center;
-    color:var(--ink-soft);
-    font-size:0.78rem;
-    margin-top:40px;
+  /* admin log */
+  .log-list{ display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; }
+  .log-item{
+    background:var(--paper); border:1px solid var(--line); border-radius:9px;
+    padding:9px 12px; font-size:0.83rem;
   }
+  .log-item .log-user{ font-weight:700; color:var(--accent); }
+  .log-item .log-time{ display:block; color:var(--ink-soft); font-size:0.72rem; margin-top:2px; }
 
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important;}
-  }
+  footer.note{ text-align:center; color:var(--ink-soft); font-size:0.78rem; margin-top:34px; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <div>
+
+<div class="login-wrap" id="loginScreen">
+  <div class="login-card">
+    <h1>Organizator</h1>
+    <p>Unesi svoju šifru za pristup</p>
+    <input type="password" id="passInput" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autofocus>
+    <button id="loginBtn">Uđi</button>
+    <div id="loginError"></div>
+  </div>
+</div>
+
+<div id="appScreen">
+  <div class="wrap">
+    <header class="top">
       <h1>Organiza<span class="dot">tor</span></h1>
-      <div class="subtitle">Šta imamo, gdje je, i šta treba kupiti</div>
-    </div>
+      <div class="user-badge">
+        <span id="userNameLabel"></span>
+        <button class="logout-btn" id="logoutBtn">Odjava</button>
+      </div>
+    </header>
+
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Pretraži namirnice...">
     </div>
-  </header>
 
-  <div id="statusMsg" class="status-msg">Učitavanje...</div>
-  <div id="grid" class="grid" style="display:none;"></div>
+    <div class="tabs-bar" id="tabsBar"></div>
+
+    <div id="statusMsg" class="status-msg">Učitavanje...</div>
+    <div id="content"></div>
+  </div>
+  <footer class="note">Podaci se čuvaju automatski i vide se na svim uređajima.</footer>
 </div>
 
-<footer class="note">Podaci se čuvaju automatski u tvom nalogu.</footer>
-
 <script>
+const USERS = {
+  '1627': { name: 'Haris', admin: false },
+  '2711': { name: 'Dženita', admin: false },
+  '0626': { name: 'Mahir', admin: false },
+  '0521': { name: 'Admin', admin: true },
+};
+
 const COLORS = {
-  gore:   {main:'#3D6B75', soft:'#DCE9EA'},
-  dolje:  {main:'#4C6B4F', soft:'#E1E9DD'},
-  zacini: {main:'#B9852F', soft:'#F1E3C4'},
-  extra:  {main:'#7A5C7E', soft:'#EBE1EC'},
-  rose:   {main:'#A85C6B', soft:'#F0DEE1'},
-  slate:  {main:'#5C6B7A', soft:'#DFE3E9'},
+  gore:   {main:'#3D6B75'},
+  dolje:  {main:'#4C6B4F'},
+  zacini: {main:'#B9852F'},
+  extra:  {main:'#7A5C7E'},
+  rose:   {main:'#A85C6B'},
+  slate:  {main:'#5C6B7A'},
 };
 const COLOR_KEYS = Object.keys(COLORS);
 
-// ====== FIREBASE PODEŠAVANJE ======
-// Zamijeni ove vrijednosti sa svojim iz Firebase konzole
-// (Project settings -> General -> Your apps -> SDK setup and configuration)
+// ====== FIREBASE ======
 const firebaseConfig = {
   apiKey: "AIzaSyAyh8myg0kNk7bu6GnqPzzgH2nmJIwu_8k",
   authDomain: "nas-organizator.firebaseapp.com",
@@ -387,9 +369,14 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const docRef = db.collection('organizator').doc('kuca');
 let ignoreNextSnapshot = false;
-// ====================================
+// =======================
 
 let state = null;
+let currentUser = null;
+let activeCatId = null;
+let addingShelf = false;
+let newShelfColor = COLOR_KEYS[0];
+let newShelfType = 'stock';
 
 const DEFAULT_STATE = {
   categories: [
@@ -397,20 +384,87 @@ const DEFAULT_STATE = {
     { id: 'dolje', name: 'Frižider dolje', colorKey: 'dolje', type: 'stock', locked: true, items: [] },
     { id: 'zacini', name: 'Ladica sa začinima', colorKey: 'zacini', type: 'stock', locked: true, items: [] },
     { id: 'kupovina', name: 'Spisak za kupovinu', colorKey: 'extra', type: 'shopping', locked: true, items: [] },
-  ]
+  ],
+  log: []
 };
 
 function uid(){ return Math.random().toString(36).slice(2,9); }
+function roundHalf(v){ return Math.round(v*2)/2; }
+function formatQty(v){ return (v % 1 === 0) ? String(v) : v.toFixed(1); }
+function escapeHtml(str){ const d=document.createElement('div'); d.textContent=str; return d.innerHTML; }
+function formatDate(dateStr){ const d=new Date(dateStr); return d.toLocaleDateString('hr-HR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+function formatDateTime(ts){ const d=new Date(ts); return d.toLocaleDateString('hr-HR',{day:'2-digit',month:'2-digit'}) + ' ' + d.toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'}); }
+function daysUntil(dateStr){
+  if(!dateStr) return null;
+  const today=new Date(); today.setHours(0,0,0,0);
+  const d=new Date(dateStr); d.setHours(0,0,0,0);
+  return Math.round((d-today)/86400000);
+}
 
 function normalizeState(s){
-  s.categories.forEach(c => {
-    if(!c.type) c.type = 'stock';
-    if(c.locked === undefined) c.locked = false;
-    c.items.forEach(it => { if(it.bought === undefined) it.bought = false; });
+  if(!s.log) s.log = [];
+  s.categories.forEach(c=>{
+    if(!c.type) c.type='stock';
+    if(c.locked===undefined) c.locked=false;
+    c.items.forEach(it=>{
+      if(it.bought===undefined) it.bought=false;
+      it.qty = roundHalf(parseFloat(it.qty)||0);
+    });
   });
   return s;
 }
 
+function addLog(text){
+  if(!state.log) state.log=[];
+  state.log.unshift({ id:uid(), user: currentUser.name, text, ts: Date.now() });
+  if(state.log.length>100) state.log = state.log.slice(0,100);
+}
+
+/* ===== LOGIN ===== */
+function tryLogin(){
+  const val = document.getElementById('passInput').value.trim();
+  const user = USERS[val];
+  const err = document.getElementById('loginError');
+  if(user){
+    localStorage.setItem('organizator-user', val);
+    currentUser = user;
+    startApp();
+  } else {
+    err.textContent = 'Pogrešna šifra, probaj ponovo.';
+    document.getElementById('passInput').value='';
+  }
+}
+document.getElementById('loginBtn').addEventListener('click', tryLogin);
+document.getElementById('passInput').addEventListener('keydown', e=>{ if(e.key==='Enter') tryLogin(); });
+document.getElementById('passInput').addEventListener('input', e=>{
+  // Automatski login čim su upisane 4 cifre
+  if(e.target.value.trim().length === 4){
+    tryLogin();
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  localStorage.removeItem('organizator-user');
+  location.reload();
+});
+
+function startApp(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appScreen').style.display='block';
+  document.getElementById('userNameLabel').innerHTML =
+    escapeHtml(currentUser.name) + (currentUser.admin ? ' <span class="admin-flag">ADMIN</span>' : '');
+  loadState();
+}
+
+(function initLogin(){
+  const saved = localStorage.getItem('organizator-user');
+  if(saved && USERS[saved]){
+    currentUser = USERS[saved];
+    startApp();
+  }
+})();
+
+/* ===== DATA ===== */
 async function loadState(){
   try{
     const snap = await docRef.get();
@@ -421,19 +475,22 @@ async function loadState(){
       await saveState();
     }
   } catch(e){
-    console.error('Greška pri učitavanju iz Firebase-a:', e);
+    console.error('Greška pri učitavanju:', e);
     state = JSON.parse(JSON.stringify(DEFAULT_STATE));
   }
 
-  // Slušaj promjene uživo - kad neko drugi doda/promijeni nešto na drugom uređaju,
-  // ova stranica će se automatski osvježiti.
-  docRef.onSnapshot(snap => {
-    if(ignoreNextSnapshot){ ignoreNextSnapshot = false; return; }
+  activeCatId = state.categories[0] ? state.categories[0].id : null;
+
+  docRef.onSnapshot(snap=>{
+    if(ignoreNextSnapshot){ ignoreNextSnapshot=false; return; }
     if(snap.exists && snap.data().payload){
       state = normalizeState(JSON.parse(snap.data().payload));
-      render();
+      renderAll();
     }
   });
+
+  document.getElementById('statusMsg').style.display='none';
+  renderAll();
 }
 
 async function saveState(){
@@ -441,188 +498,199 @@ async function saveState(){
     ignoreNextSnapshot = true;
     await docRef.set({ payload: JSON.stringify(state) });
   } catch(e){
-    console.error('Greška pri čuvanju u Firebase:', e);
-    alert('Nije uspjelo čuvanje - provjeri internet konekciju.');
+    console.error('Greška pri čuvanju:', e);
+    alert('Nije uspjelo čuvanje — provjeri internet konekciju.');
   }
 }
 
-function daysUntil(dateStr){
-  if(!dateStr) return null;
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  const d = new Date(dateStr);
-  d.setHours(0,0,0,0);
-  return Math.round((d - today) / 86400000);
+/* ===== RENDER ===== */
+function renderAll(){
+  renderTabs();
+  renderContent();
 }
 
-function formatDate(dateStr){
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('hr-HR', { day:'2-digit', month:'2-digit', year:'numeric' });
-}
-
-function escapeHtml(str){
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-let addingShelf = false;
-let newShelfColor = COLOR_KEYS[0];
-let newShelfType = 'stock';
-
-function render(){
-  const grid = document.getElementById('grid');
-  const search = document.getElementById('searchInput').value.trim().toLowerCase();
-  grid.innerHTML = '';
-
-  state.categories.forEach(cat => {
+function renderTabs(){
+  const bar = document.getElementById('tabsBar');
+  bar.innerHTML = '';
+  state.categories.forEach(cat=>{
     const color = COLORS[cat.colorKey] || COLORS.gore;
-    const card = document.createElement('div');
-    card.className = 'shelf';
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (activeCatId===cat.id ? ' active' : '');
+    btn.innerHTML = `<span class="tab-dot" style="background:${color.main}"></span>${escapeHtml(cat.name)}`;
+    btn.addEventListener('click', ()=>{ activeCatId=cat.id; addingShelf=false; renderAll(); });
+    bar.appendChild(btn);
+  });
+  if(currentUser.admin){
+    const logBtn = document.createElement('button');
+    logBtn.className = 'tab-btn admin-tab' + (activeCatId==='ADMIN_LOG' ? ' active' : '');
+    logBtn.textContent = '📋 Aktivnost';
+    logBtn.addEventListener('click', ()=>{ activeCatId='ADMIN_LOG'; renderAll(); });
+    bar.appendChild(logBtn);
+  }
+  const addBtn = document.createElement('button');
+  addBtn.className = 'tab-btn add-tab' + (activeCatId==='NEW_CAT' ? ' active' : '');
+  addBtn.textContent = '+ Nova kategorija';
+  addBtn.addEventListener('click', ()=>{ activeCatId='NEW_CAT'; newShelfColor=COLOR_KEYS[0]; newShelfType='stock'; renderAll(); });
+  bar.appendChild(addBtn);
+}
 
-    const filteredItems = search
-      ? cat.items.filter(it => it.name.toLowerCase().includes(search))
-      : cat.items;
+function renderContent(){
+  const content = document.getElementById('content');
+  content.innerHTML = '';
 
-    const deleteBtn = cat.locked
-      ? ''
-      : `<button class="icon-btn" data-action="del-cat" data-cat="${cat.id}" title="Obriši kategoriju">✕</button>`;
+  if(activeCatId === 'ADMIN_LOG'){
+    content.appendChild(buildLogCard());
+    return;
+  }
+  if(activeCatId === 'NEW_CAT'){
+    content.appendChild(buildNewCategoryCard());
+    return;
+  }
 
-    const itemsHtml = filteredItems.length === 0
-      ? `<div class="empty-note">${search ? 'Nema rezultata.' : (cat.type === 'shopping' ? 'Spisak je prazan.' : 'Prazno. Dodaj nešto ispod.')}</div>`
-      : filteredItems.map(it => cat.type === 'shopping' ? renderShoppingItem(it, cat.id) : renderStockItem(it, cat.id)).join('');
+  const cat = state.categories.find(c=>c.id===activeCatId);
+  if(!cat){
+    if(state.categories[0]){ activeCatId = state.categories[0].id; renderContent(); }
+    return;
+  }
+  content.appendChild(buildCategoryCard(cat));
+}
 
-    const formHtml = cat.type === 'shopping'
-      ? `
-      <form class="add-item" data-cat="${cat.id}">
-        <input class="f-name" type="text" placeholder="Šta treba kupiti" required>
-        <input class="f-qty" type="number" min="0" step="0.1" placeholder="Kol." value="1">
-        <select class="f-unit">
-          <option value="kom">kom</option>
-          <option value="g">g</option>
-          <option value="kg">kg</option>
-          <option value="ml">ml</option>
-          <option value="l">l</option>
-          <option value="pak">pak</option>
-        </select>
-        <input class="f-exp" type="date" title="Datum (opciono)">
-        <button class="f-submit" type="submit" style="background:${color.main}">Dodaj</button>
-      </form>`
-      : `
-      <form class="add-item" data-cat="${cat.id}">
-        <input class="f-name" type="text" placeholder="Namirnica" required>
-        <input class="f-qty" type="number" min="0" step="0.1" placeholder="Kol." value="1">
-        <select class="f-unit">
-          <option value="kom">kom</option>
-          <option value="g">g</option>
-          <option value="kg">kg</option>
-          <option value="ml">ml</option>
-          <option value="l">l</option>
-          <option value="pak">pak</option>
-        </select>
-        <input class="f-exp" type="date" title="Rok trajanja (opciono)">
-        <button class="f-submit" type="submit" style="background:${color.main}">Dodaj</button>
-      </form>`;
+function buildCategoryCard(cat){
+  const search = document.getElementById('searchInput').value.trim().toLowerCase();
+  const color = COLORS[cat.colorKey] || COLORS.gore;
+  const card = document.createElement('div');
+  card.className = 'shelf';
 
-    card.innerHTML = `
-      <div class="tape"></div>
-      <div class="shelf-head">
-        <div class="shelf-title"><span class="swatch" style="background:${color.main}"></span>${escapeHtml(cat.name)}</div>
-        <div class="shelf-actions">${deleteBtn}</div>
-      </div>
-      <div class="items">${itemsHtml}</div>
-      ${formHtml}
-    `;
-    grid.appendChild(card);
+  const filteredItems = search ? cat.items.filter(it=>it.name.toLowerCase().includes(search)) : cat.items;
+
+  const deleteBtn = cat.locked ? '' :
+    `<button class="icon-btn" data-action="del-cat" data-cat="${cat.id}" title="Obriši kategoriju">✕</button>`;
+
+  const itemsHtml = filteredItems.length===0
+    ? `<div class="empty-note">${search ? 'Nema rezultata.' : (cat.type==='shopping' ? 'Spisak je prazan.' : 'Prazno. Dodaj nešto ispod.')}</div>`
+    : filteredItems.map(it=> cat.type==='shopping' ? renderShoppingItem(it, cat.id) : renderStockItem(it, cat.id)).join('');
+
+  const unitOptions = `
+    <option value="kom">kom</option>
+    <option value="g">g</option>
+    <option value="kg">kg</option>
+    <option value="ml">ml</option>
+    <option value="l">l</option>
+    <option value="pak">pak</option>`;
+
+  const formHtml = cat.type==='shopping' ? `
+    <form class="add-item" data-cat="${cat.id}">
+      <input class="f-name" type="text" placeholder="Šta treba kupiti" required>
+      <input class="f-qty" type="number" min="0.5" step="0.5" value="1">
+      <select class="f-unit">${unitOptions}</select>
+      <input class="f-exp" type="date" title="Datum (opciono)">
+      <button class="f-submit" type="submit" style="background:${color.main}">Dodaj</button>
+    </form>` : `
+    <form class="add-item" data-cat="${cat.id}">
+      <input class="f-name" type="text" placeholder="Namirnica" required>
+      <input class="f-qty" type="number" min="0.5" step="0.5" value="1">
+      <select class="f-unit">${unitOptions}</select>
+      <input class="f-exp" type="date" title="Rok trajanja (opciono)">
+      <button class="f-submit" type="submit" style="background:${color.main}">Dodaj</button>
+    </form>`;
+
+  card.innerHTML = `
+    <div class="tape"></div>
+    <div class="shelf-head">
+      <div class="shelf-title"><span class="swatch" style="background:${color.main}"></span>${escapeHtml(cat.name)}</div>
+      <div>${deleteBtn}</div>
+    </div>
+    <div class="items">${itemsHtml}</div>
+    ${formHtml}
+  `;
+
+  card.querySelector('form.add-item').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const name = card.querySelector('.f-name').value.trim();
+    let qty = parseFloat(card.querySelector('.f-qty').value);
+    qty = isNaN(qty) ? 1 : roundHalf(qty);
+    if(qty < 0.5) qty = 0.5;
+    const unit = card.querySelector('.f-unit').value;
+    const exp = card.querySelector('.f-exp').value;
+    if(!name) return;
+    cat.items.push({ id: uid(), name, qty, unit, expiry: exp || null, bought: false });
+    addLog(`dodao/la "${name}" (${formatQty(qty)} ${unit}) u "${cat.name}"`);
+    await saveState();
+    renderAll();
   });
 
-  // Add-category tile
-  const addTile = document.createElement('div');
-  if(!addingShelf){
-    addTile.className = 'add-shelf';
-    addTile.innerHTML = `<span style="font-size:1.3rem;">+</span> Nova kategorija`;
-    addTile.addEventListener('click', () => { addingShelf = true; newShelfColor = COLOR_KEYS[0]; newShelfType = 'stock'; render(); });
-  } else {
-    addTile.className = 'shelf';
-    addTile.innerHTML = `
-      <div class="tape"></div>
-      <div class="new-shelf-form">
-        <input type="text" id="newShelfName" placeholder="Naziv kategorije (npr. Ostava)">
-        <div class="type-row">
-          <label><input type="radio" name="newType" value="stock" checked> Zaliha (sa rokom trajanja)</label>
-          <label><input type="radio" name="newType" value="shopping"> Spisak za kupovinu</label>
-        </div>
-        <div class="color-row" id="colorRow"></div>
-        <div class="new-shelf-buttons">
-          <button class="btn-save" id="saveShelfBtn">Sačuvaj</button>
-          <button class="btn-cancel" id="cancelShelfBtn">Otkaži</button>
-        </div>
-      </div>
-    `;
-  }
-  grid.appendChild(addTile);
-
-  if(addingShelf){
-    const colorRow = document.getElementById('colorRow');
-    COLOR_KEYS.forEach(k => {
-      const b = document.createElement('button');
-      b.style.background = COLORS[k].main;
-      if(k === newShelfColor) b.classList.add('sel');
-      b.addEventListener('click', (e) => {
-        e.preventDefault();
-        newShelfColor = k;
-        render();
-        document.getElementById('newShelfName').focus();
-      });
-      colorRow.appendChild(b);
-    });
-    document.querySelectorAll('input[name="newType"]').forEach(r => {
-      r.checked = (r.value === newShelfType);
-      r.addEventListener('change', () => { newShelfType = r.value; });
-    });
-    document.getElementById('saveShelfBtn').addEventListener('click', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('newShelfName').value.trim();
-      if(!name) return;
-      state.categories.push({ id: uid(), name, colorKey: newShelfColor, type: newShelfType, locked: false, items: [] });
-      addingShelf = false;
+  const delCatBtn = card.querySelector('[data-action="del-cat"]');
+  if(delCatBtn){
+    delCatBtn.addEventListener('click', async ()=>{
+      if(!confirm(`Obrisati kategoriju "${cat.name}" i sve namirnice u njoj?`)) return;
+      state.categories = state.categories.filter(c=>c.id!==cat.id);
+      addLog(`obrisao/la kategoriju "${cat.name}"`);
+      activeCatId = state.categories[0] ? state.categories[0].id : null;
       await saveState();
-      render();
-    });
-    document.getElementById('cancelShelfBtn').addEventListener('click', (e) => {
-      e.preventDefault();
-      addingShelf = false;
-      render();
+      renderAll();
     });
   }
 
-  attachItemFormHandlers();
-  attachDeleteHandlers();
-  attachQtyHandlers();
-  attachCheckHandlers();
+  card.querySelectorAll('[data-action="del-item"]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const item = cat.items.find(it=>it.id===btn.dataset.item);
+      cat.items = cat.items.filter(it=>it.id!==btn.dataset.item);
+      if(item) addLog(`uklonio/la "${item.name}" iz "${cat.name}"`);
+      await saveState();
+      renderAll();
+    });
+  });
+
+  card.querySelectorAll('[data-action="qty-inc"], [data-action="qty-dec"]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const item = cat.items.find(it=>it.id===btn.dataset.item);
+      if(!item) return;
+      const delta = btn.dataset.action==='qty-inc' ? 0.5 : -0.5;
+      item.qty = Math.max(0, roundHalf(item.qty + delta));
+      addLog(`promijenio/la količinu "${item.name}" na ${formatQty(item.qty)} ${item.unit} (${cat.name})`);
+      await saveState();
+      renderAll();
+    });
+  });
+
+  card.querySelectorAll('[data-action="toggle-bought"]').forEach(box=>{
+    box.addEventListener('change', async ()=>{
+      const item = cat.items.find(it=>it.id===box.dataset.item);
+      if(!item) return;
+      item.bought = box.checked;
+      addLog(`${box.checked ? 'označio/la kupljeno' : 'poništio/la kupljeno'}: "${item.name}"`);
+      await saveState();
+      renderAll();
+    });
+  });
+
+  return card;
 }
 
 function renderStockItem(it, catId){
   const d = daysUntil(it.expiry);
-  let warnClass = '';
-  let expLabel = '';
-  if(d !== null){
-    if(d < 0){ warnClass = 'warn'; expLabel = `<span class="exp-warn">isteklo prije ${Math.abs(d)}d</span>`; }
-    else if(d === 0){ warnClass = 'warn'; expLabel = `<span class="exp-warn">ističe danas</span>`; }
-    else if(d <= 3){ warnClass = 'warn'; expLabel = `<span class="exp-warn">ističe za ${d}d</span>`; }
-    else { expLabel = `do ${formatDate(it.expiry)}`; }
+  let warnClass='', expLabel='';
+  if(d!==null){
+    if(d<0){ warnClass='warn'; expLabel=`<span class="exp-warn">isteklo prije ${Math.abs(d)}d</span>`; }
+    else if(d===0){ warnClass='warn'; expLabel=`<span class="exp-warn">ističe danas</span>`; }
+    else if(d<=3){ warnClass='warn'; expLabel=`<span class="exp-warn">ističe za ${d}d</span>`; }
+    else { expLabel=`do ${formatDate(it.expiry)}`; }
   }
   return `
     <div class="item ${warnClass}">
       <div class="item-main">
         <div class="item-name">${escapeHtml(it.name)}</div>
         <div class="item-meta">
-          <input class="qty-input" type="number" min="0" step="0.1" value="${it.qty}" data-action="edit-qty" data-cat="${catId}" data-item="${it.id}">
           <span>${escapeHtml(it.unit)}</span>
           ${expLabel ? `<span>· ${expLabel}</span>` : ''}
         </div>
       </div>
-      <button class="item-del" data-action="del-item" data-cat="${catId}" data-item="${it.id}" title="Ukloni">✕</button>
+      <div class="qty-control">
+        <button class="qty-btn" data-action="qty-dec" data-item="${it.id}">−</button>
+        <span class="qty-val">${formatQty(it.qty)}</span>
+        <button class="qty-btn" data-action="qty-inc" data-item="${it.id}">+</button>
+      </div>
+      <button class="item-del" data-action="del-item" data-item="${it.id}" title="Ukloni">✕</button>
     </div>
   `;
 }
@@ -631,98 +699,104 @@ function renderShoppingItem(it, catId){
   const dateLabel = it.expiry ? `· ${formatDate(it.expiry)}` : '';
   return `
     <div class="item ${it.bought ? 'bought' : ''}">
-      <input class="item-check" type="checkbox" ${it.bought ? 'checked' : ''} data-action="toggle-bought" data-cat="${catId}" data-item="${it.id}">
+      <input class="item-check" type="checkbox" ${it.bought ? 'checked' : ''} data-action="toggle-bought" data-item="${it.id}">
       <div class="item-main">
         <div class="item-name ${it.bought ? 'crossed' : ''}">${escapeHtml(it.name)}</div>
         <div class="item-meta">
-          <input class="qty-input" type="number" min="0" step="0.1" value="${it.qty}" data-action="edit-qty" data-cat="${catId}" data-item="${it.id}">
           <span>${escapeHtml(it.unit)}</span>
           <span>${dateLabel}</span>
         </div>
       </div>
-      <button class="item-del" data-action="del-item" data-cat="${catId}" data-item="${it.id}" title="Ukloni">✕</button>
+      <div class="qty-control">
+        <button class="qty-btn" data-action="qty-dec" data-item="${it.id}">−</button>
+        <span class="qty-val">${formatQty(it.qty)}</span>
+        <button class="qty-btn" data-action="qty-inc" data-item="${it.id}">+</button>
+      </div>
+      <button class="item-del" data-action="del-item" data-item="${it.id}" title="Ukloni">✕</button>
     </div>
   `;
 }
 
-function attachItemFormHandlers(){
-  document.querySelectorAll('form.add-item').forEach(form => {
-    form.addEventListener('submit', async (e) => {
+function buildNewCategoryCard(){
+  const card = document.createElement('div');
+  card.className = 'shelf';
+  card.innerHTML = `
+    <div class="tape"></div>
+    <div class="new-shelf-form">
+      <input type="text" id="newShelfName" placeholder="Naziv kategorije (npr. Ostava)">
+      <div class="type-row">
+        <label><input type="radio" name="newType" value="stock" checked> Zaliha (sa rokom trajanja)</label>
+        <label><input type="radio" name="newType" value="shopping"> Spisak za kupovinu</label>
+      </div>
+      <div class="color-row" id="colorRow"></div>
+      <div class="new-shelf-buttons">
+        <button class="btn-save" id="saveShelfBtn">Sačuvaj</button>
+        <button class="btn-cancel" id="cancelShelfBtn">Otkaži</button>
+      </div>
+    </div>
+  `;
+
+  const colorRow = card.querySelector('#colorRow');
+  COLOR_KEYS.forEach(k=>{
+    const b = document.createElement('button');
+    b.style.background = COLORS[k].main;
+    if(k===newShelfColor) b.classList.add('sel');
+    b.addEventListener('click', e=>{
       e.preventDefault();
-      const catId = form.dataset.cat;
-      const name = form.querySelector('.f-name').value.trim();
-      const qty = form.querySelector('.f-qty').value || '1';
-      const unit = form.querySelector('.f-unit').value;
-      const exp = form.querySelector('.f-exp').value;
-      if(!name) return;
-      const cat = state.categories.find(c => c.id === catId);
-      if(!cat) return;
-      cat.items.push({ id: uid(), name, qty, unit, expiry: exp || null, bought: false });
-      await saveState();
-      render();
+      newShelfColor = k;
+      renderAll();
     });
+    colorRow.appendChild(b);
   });
+
+  card.querySelectorAll('input[name="newType"]').forEach(r=>{
+    r.checked = (r.value===newShelfType);
+    r.addEventListener('change', ()=>{ newShelfType = r.value; });
+  });
+
+  card.querySelector('#saveShelfBtn').addEventListener('click', async e=>{
+    e.preventDefault();
+    const name = card.querySelector('#newShelfName').value.trim();
+    if(!name) return;
+    const newCat = { id: uid(), name, colorKey: newShelfColor, type: newShelfType, locked: false, items: [] };
+    state.categories.push(newCat);
+    addLog(`napravio/la novu kategoriju "${name}"`);
+    activeCatId = newCat.id;
+    await saveState();
+    renderAll();
+  });
+  card.querySelector('#cancelShelfBtn').addEventListener('click', e=>{
+    e.preventDefault();
+    activeCatId = state.categories[0] ? state.categories[0].id : null;
+    renderAll();
+  });
+
+  return card;
 }
 
-function attachDeleteHandlers(){
-  document.querySelectorAll('[data-action="del-item"]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const cat = state.categories.find(c => c.id === btn.dataset.cat);
-      if(!cat) return;
-      cat.items = cat.items.filter(it => it.id !== btn.dataset.item);
-      await saveState();
-      render();
-    });
-  });
-  document.querySelectorAll('[data-action="del-cat"]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const cat = state.categories.find(c => c.id === btn.dataset.cat);
-      if(!cat || cat.locked) return;
-      if(!confirm(`Obrisati kategoriju "${cat.name}" i sve namirnice u njoj?`)) return;
-      state.categories = state.categories.filter(c => c.id !== btn.dataset.cat);
-      await saveState();
-      render();
-    });
-  });
+function buildLogCard(){
+  const card = document.createElement('div');
+  card.className = 'shelf';
+  const log = state.log || [];
+  const rows = log.length===0
+    ? `<div class="empty-note">Još nema aktivnosti.</div>`
+    : log.map(l=>`
+        <div class="log-item">
+          <span class="log-user">${escapeHtml(l.user)}</span> — ${escapeHtml(l.text)}
+          <span class="log-time">${formatDateTime(l.ts)}</span>
+        </div>
+      `).join('');
+  card.innerHTML = `
+    <div class="tape"></div>
+    <div class="shelf-head">
+      <div class="shelf-title">📋 Aktivnost (svi korisnici)</div>
+    </div>
+    <div class="log-list">${rows}</div>
+  `;
+  return card;
 }
 
-function attachQtyHandlers(){
-  document.querySelectorAll('[data-action="edit-qty"]').forEach(input => {
-    input.addEventListener('change', async () => {
-      const cat = state.categories.find(c => c.id === input.dataset.cat);
-      if(!cat) return;
-      const item = cat.items.find(it => it.id === input.dataset.item);
-      if(!item) return;
-      const val = parseFloat(input.value);
-      item.qty = isNaN(val) ? 0 : val;
-      await saveState();
-      render();
-    });
-  });
-}
-
-function attachCheckHandlers(){
-  document.querySelectorAll('[data-action="toggle-bought"]').forEach(box => {
-    box.addEventListener('change', async () => {
-      const cat = state.categories.find(c => c.id === box.dataset.cat);
-      if(!cat) return;
-      const item = cat.items.find(it => it.id === box.dataset.item);
-      if(!item) return;
-      item.bought = box.checked;
-      await saveState();
-      render();
-    });
-  });
-}
-
-document.getElementById('searchInput').addEventListener('input', render);
-
-(async function init(){
-  await loadState();
-  document.getElementById('statusMsg').style.display = 'none';
-  document.getElementById('grid').style.display = 'grid';
-  render();
-})();
+document.getElementById('searchInput').addEventListener('input', renderContent);
 </script>
 </body>
 </html>
