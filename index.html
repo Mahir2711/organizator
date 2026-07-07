@@ -144,9 +144,10 @@
   }
   .logout-btn:hover{ color:var(--warn); }
 
-  .search-box{ margin-bottom:14px; }
-  .search-box input{
-    width:100%;
+  .search-box{ margin-bottom:14px; display:flex; gap:8px; flex-wrap:wrap; }
+  .search-box input[type="text"]{
+    flex:2;
+    min-width:160px;
     padding:10px 14px;
     border-radius:10px;
     border:2px solid var(--line);
@@ -155,7 +156,20 @@
     font-size:0.9rem;
     color:var(--ink);
   }
-  .search-box input:focus{ outline:none; border-color:var(--accent); }
+  .search-box input[type="text"]:focus{ outline:none; border-color:var(--accent); }
+  .search-box select{
+    flex:1;
+    min-width:140px;
+    padding:10px 12px;
+    border-radius:10px;
+    border:2px solid var(--line);
+    background:#fff;
+    font-family:'Inter',sans-serif;
+    font-size:0.9rem;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .search-box select:focus{ outline:none; border-color:var(--accent); }
 
   .tabs-bar{
     display:flex;
@@ -225,6 +239,12 @@
   .items::-webkit-scrollbar{ width:7px; }
   .items::-webkit-scrollbar-thumb{ background:var(--line); border-radius:4px; }
   .empty-note{ font-size:0.85rem; color:var(--ink-soft); font-style:italic; padding:8px 2px; }
+
+  .search-group-label{
+    font-weight:700; font-size:0.72rem; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:0.5px; margin-top:6px;
+  }
+  .search-group-label:first-child{ margin-top:0; }
 
   .item{
     display:flex; align-items:center; justify-content:space-between; gap:8px;
@@ -328,6 +348,7 @@
 
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Pretraži namirnice...">
+      <select id="searchCatSelect"></select>
     </div>
 
     <div class="tabs-bar" id="tabsBar"></div>
@@ -377,6 +398,7 @@ let activeCatId = null;
 let addingShelf = false;
 let newShelfColor = COLOR_KEYS[0];
 let newShelfType = 'stock';
+let selectedSearchCat = 'ALL';
 
 const DEFAULT_STATE = {
   categories: [
@@ -505,8 +527,21 @@ async function saveState(){
 
 /* ===== RENDER ===== */
 function renderAll(){
+  renderSearchCatSelect();
   renderTabs();
   renderContent();
+}
+
+function renderSearchCatSelect(){
+  const sel = document.getElementById('searchCatSelect');
+  if(!sel) return;
+  const cats = state.categories;
+  if(selectedSearchCat !== 'ALL' && !cats.find(c=>c.id===selectedSearchCat)){
+    selectedSearchCat = 'ALL';
+  }
+  sel.innerHTML = '<option value="ALL">🔍 Sve kategorije</option>' +
+    cats.map(c=>`<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+  sel.value = selectedSearchCat;
 }
 
 function renderTabs(){
@@ -538,6 +573,13 @@ function renderContent(){
   const content = document.getElementById('content');
   content.innerHTML = '';
 
+  const search = document.getElementById('searchInput').value.trim().toLowerCase();
+
+  if(selectedSearchCat === 'ALL' && search){
+    content.appendChild(buildSearchAllCard(search));
+    return;
+  }
+
   if(activeCatId === 'ADMIN_LOG'){
     content.appendChild(buildLogCard());
     return;
@@ -553,6 +595,75 @@ function renderContent(){
     return;
   }
   content.appendChild(buildCategoryCard(cat));
+}
+
+function buildSearchAllCard(search){
+  const card = document.createElement('div');
+  card.className = 'shelf';
+
+  let resultsHtml = '';
+  let totalMatches = 0;
+
+  state.categories.forEach(cat=>{
+    const matches = cat.items.filter(it=>it.name.toLowerCase().includes(search));
+    if(matches.length===0) return;
+    totalMatches += matches.length;
+    const color = COLORS[cat.colorKey] || COLORS.gore;
+    resultsHtml += `<div class="search-group-label" style="color:${color.main}">${escapeHtml(cat.name)}</div>`;
+    resultsHtml += matches.map(it => cat.type==='shopping' ? renderShoppingItem(it, cat.id) : renderStockItem(it, cat.id)).join('');
+  });
+
+  card.innerHTML = `
+    <div class="tape"></div>
+    <div class="shelf-head">
+      <div class="shelf-title">🔍 Rezultati za "${escapeHtml(search)}"</div>
+    </div>
+    <div class="items">${totalMatches ? resultsHtml : '<div class="empty-note">Nema rezultata ni u jednoj kategoriji.</div>'}</div>
+  `;
+
+  attachSearchAllHandlers(card);
+  return card;
+}
+
+function attachSearchAllHandlers(card){
+  card.querySelectorAll('[data-action="del-item"]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const cat = state.categories.find(c=>c.id===btn.dataset.cat);
+      if(!cat) return;
+      const item = cat.items.find(it=>it.id===btn.dataset.item);
+      cat.items = cat.items.filter(it=>it.id!==btn.dataset.item);
+      if(item) addLog(`uklonio/la "${item.name}" iz "${cat.name}"`);
+      await saveState();
+      renderAll();
+    });
+  });
+
+  card.querySelectorAll('[data-action="qty-inc"], [data-action="qty-dec"]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const cat = state.categories.find(c=>c.id===btn.dataset.cat);
+      if(!cat) return;
+      const item = cat.items.find(it=>it.id===btn.dataset.item);
+      if(!item) return;
+      const delta = btn.dataset.action==='qty-inc' ? 0.5 : -0.5;
+      item.qty = Math.max(0, roundHalf(item.qty + delta));
+      addLog(`promijenio/la količinu "${item.name}" na ${formatQty(item.qty)} ${item.unit} (${cat.name})`);
+      await saveState();
+      renderAll();
+    });
+  });
+
+  card.querySelectorAll('[data-action="toggle-bought"]').forEach(box=>{
+    box.addEventListener('change', async ()=>{
+      const cat = state.categories.find(c=>c.id===box.dataset.cat);
+      if(!cat) return;
+      const item = cat.items.find(it=>it.id===box.dataset.item);
+      if(!item) return;
+      item.bought = box.checked;
+      addLog(`${box.checked ? 'označio/la kupljeno' : 'poništio/la kupljeno'}: "${item.name}"`);
+      await saveState();
+      renderAll();
+    });
+  });
 }
 
 function buildCategoryCard(cat){
@@ -686,11 +797,11 @@ function renderStockItem(it, catId){
         </div>
       </div>
       <div class="qty-control">
-        <button class="qty-btn" data-action="qty-dec" data-item="${it.id}">−</button>
+        <button class="qty-btn" data-action="qty-dec" data-item="${it.id}" data-cat="${catId}">−</button>
         <span class="qty-val">${formatQty(it.qty)}</span>
-        <button class="qty-btn" data-action="qty-inc" data-item="${it.id}">+</button>
+        <button class="qty-btn" data-action="qty-inc" data-item="${it.id}" data-cat="${catId}">+</button>
       </div>
-      <button class="item-del" data-action="del-item" data-item="${it.id}" title="Ukloni">✕</button>
+      <button class="item-del" data-action="del-item" data-item="${it.id}" data-cat="${catId}" title="Ukloni">✕</button>
     </div>
   `;
 }
@@ -699,7 +810,7 @@ function renderShoppingItem(it, catId){
   const dateLabel = it.expiry ? `· ${formatDate(it.expiry)}` : '';
   return `
     <div class="item ${it.bought ? 'bought' : ''}">
-      <input class="item-check" type="checkbox" ${it.bought ? 'checked' : ''} data-action="toggle-bought" data-item="${it.id}">
+      <input class="item-check" type="checkbox" ${it.bought ? 'checked' : ''} data-action="toggle-bought" data-item="${it.id}" data-cat="${catId}">
       <div class="item-main">
         <div class="item-name ${it.bought ? 'crossed' : ''}">${escapeHtml(it.name)}</div>
         <div class="item-meta">
@@ -708,11 +819,11 @@ function renderShoppingItem(it, catId){
         </div>
       </div>
       <div class="qty-control">
-        <button class="qty-btn" data-action="qty-dec" data-item="${it.id}">−</button>
+        <button class="qty-btn" data-action="qty-dec" data-item="${it.id}" data-cat="${catId}">−</button>
         <span class="qty-val">${formatQty(it.qty)}</span>
-        <button class="qty-btn" data-action="qty-inc" data-item="${it.id}">+</button>
+        <button class="qty-btn" data-action="qty-inc" data-item="${it.id}" data-cat="${catId}">+</button>
       </div>
-      <button class="item-del" data-action="del-item" data-item="${it.id}" title="Ukloni">✕</button>
+      <button class="item-del" data-action="del-item" data-item="${it.id}" data-cat="${catId}" title="Ukloni">✕</button>
     </div>
   `;
 }
@@ -797,6 +908,13 @@ function buildLogCard(){
 }
 
 document.getElementById('searchInput').addEventListener('input', renderContent);
+document.getElementById('searchCatSelect').addEventListener('change', e=>{
+  selectedSearchCat = e.target.value;
+  if(selectedSearchCat !== 'ALL'){
+    activeCatId = selectedSearchCat;
+  }
+  renderAll();
+});
 </script>
 </body>
 </html>
